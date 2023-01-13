@@ -12,25 +12,13 @@ namespace DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Files",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameFile = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Files", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Results",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AllTime = table.Column<int>(type: "int", nullable: false),
+                    AllTimeInSeconds = table.Column<double>(type: "float", nullable: false),
                     FirstOperation = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AverageTime = table.Column<int>(type: "int", nullable: false),
+                    AverageTime = table.Column<double>(type: "float", nullable: false),
                     AverageIndex = table.Column<double>(type: "float", nullable: false),
                     MedianaIndex = table.Column<double>(type: "float", nullable: false),
                     MaximumIndex = table.Column<double>(type: "float", nullable: false),
@@ -43,6 +31,25 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameFile = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ResultId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Files_Results_ResultId",
+                        column: x => x.ResultId,
+                        principalTable: "Results",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Values",
                 columns: table => new
                 {
@@ -50,8 +57,7 @@ namespace DAL.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Time = table.Column<int>(type: "int", nullable: false),
                     Index = table.Column<double>(type: "float", nullable: false),
-                    FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ResultId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,24 +68,18 @@ namespace DAL.Migrations
                         principalTable: "Files",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Values_Results_ResultId",
-                        column: x => x.ResultId,
-                        principalTable: "Results",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_ResultId",
+                table: "Files",
+                column: "ResultId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Values_FileId",
                 table: "Values",
                 column: "FileId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Values_ResultId",
-                table: "Values",
-                column: "ResultId",
-                unique: true);
         }
 
         /// <inheritdoc />

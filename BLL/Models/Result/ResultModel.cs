@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace BLL.Models.Result
 {
-    public class Result
+    public class ResultModel
     {
-        public Guid Id { get; set; }
         public double AllTimeInSeconds { get; set; }
         public DateTime FirstOperation { get; set; }
         public double AverageTime { get; set; }
@@ -17,6 +16,5 @@ namespace DAL.Entities
         public double MaximumIndex { get; set; }
         public double MinimumIndex { get; set; }
         public int StringsAmount { get; set; }
-        public virtual File File { get; set; } = null!;
     }
 }

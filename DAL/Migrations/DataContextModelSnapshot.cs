@@ -32,7 +32,13 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ResultId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ResultId")
+                        .IsUnique();
 
                     b.ToTable("Files");
                 });
@@ -43,14 +49,14 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AllTime")
-                        .HasColumnType("int");
+                    b.Property<double>("AllTimeInSeconds")
+                        .HasColumnType("float");
 
                     b.Property<double>("AverageIndex")
                         .HasColumnType("float");
 
-                    b.Property<int>("AverageTime")
-                        .HasColumnType("int");
+                    b.Property<double>("AverageTime")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("FirstOperation")
                         .HasColumnType("datetime2");
@@ -87,9 +93,6 @@ namespace DAL.Migrations
                     b.Property<double>("Index")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("ResultId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Time")
                         .HasColumnType("int");
 
@@ -97,10 +100,18 @@ namespace DAL.Migrations
 
                     b.HasIndex("FileId");
 
-                    b.HasIndex("ResultId")
-                        .IsUnique();
-
                     b.ToTable("Values");
+                });
+
+            modelBuilder.Entity("DAL.Entities.File", b =>
+                {
+                    b.HasOne("DAL.Entities.Result", "Result")
+                        .WithOne("File")
+                        .HasForeignKey("DAL.Entities.File", "ResultId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Result");
                 });
 
             modelBuilder.Entity("DAL.Entities.Value", b =>
@@ -111,15 +122,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Result", "Result")
-                        .WithOne("Value")
-                        .HasForeignKey("DAL.Entities.Value", "ResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("File");
-
-                    b.Navigation("Result");
                 });
 
             modelBuilder.Entity("DAL.Entities.File", b =>
@@ -129,7 +132,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Result", b =>
                 {
-                    b.Navigation("Value")
+                    b.Navigation("File")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -13,8 +13,5 @@ namespace DAL.Entities
         public int Time { get; set; }
         public double Index { get; set; }
         public virtual File File { get; set; } = null!;
-        public Guid ResultId { get; set; } 
-        public virtual Result Result { get; set; } = null!;
-
     }
 }

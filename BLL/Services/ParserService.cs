@@ -1,33 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using BLL.Models.Value;
+using Common.Helpers;
+
 
 namespace BLL.Services
 {
-    public class ParserService
+    public static class ParserService
     {
-        private readonly DataContext _db;
-
-        public ParserService(DataContext db)
+        public static async Task<List<ValueModel>> ReadValuesFileAsync(Stream streamFile)
         {
-            _db = db;
-        }
-        public void ReadValuesFile(Stream streamFile)
-        {
-            
-        }
-        public static async Task<string> ReadValuesFileAsync(Stream streamFile)
-        {
-            var result = new StringBuilder();
+            List<ValueModel> models = new List<ValueModel>();
             using (var reader = new StreamReader(streamFile))
             {
-                while (reader.Peek() >= 0)
-                    result.AppendLine(await reader.ReadLineAsync());
+                var str = await reader.ReadLineAsync();
+                if (str == "") throw new ValidationException("Строк в файле должно быть больше 0");
+                while (str != "")
+                {
+                    if(models.Count > 10000) throw new ValidationException("Строк в файле должно быть меньше 10000");
+                    var valueModel = GetValueModelFromStr((str!));
+                    valueModel.ValidateModel();
+                    models.Add(valueModel);
+                    str = await reader.ReadLineAsync();
+                }
             }
-            return result.ToString();
+            return models;
+        }
+
+        private static ValueModel GetValueModelFromStr(string str)
+        {
+           var strMas = str.Split(';');
+           return new ValueModel()
+           {
+               Date = DateTime.ParseExact(strMas[0], "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture),
+               Time = Int32.Parse(strMas[1]),
+               Index = Double.Parse(strMas[2])
+           };
         }
     }
 }

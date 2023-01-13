@@ -14,8 +14,7 @@ namespace BLL.Attributes
 
         public ValueDateAttribute()
         {
-            if (string.IsNullOrEmpty(ErrorMessage))
-                ErrorMessage = $"Date must be between {_minDate} and {_maxDate}";
+            ErrorMessage = $"Date must be between {_minDate} and {_maxDate}";
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
