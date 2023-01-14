@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BLL.Models.Value;
 using DAL;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -28,6 +30,12 @@ namespace BLL.Services
             };
             _db.Files.Add(file);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<List<ValueModel>> GetValuesModelsByFileName(string fileName)
+        {
+            return await _db.Values.Where(x => x.File.NameFile == fileName).Select(x => _mapper.Map<ValueModel>(x))
+                .AsNoTracking().ToListAsync();
         }
     }
 }

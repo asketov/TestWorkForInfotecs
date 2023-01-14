@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using BLL.Models.Value;
+using Common.Exceptions.Validate;
 using Common.Helpers;
 
 
@@ -14,10 +15,10 @@ namespace BLL.Services
             using (var reader = new StreamReader(streamFile))
             {
                 var str = await reader.ReadLineAsync();
-                if (str == "") throw new ValidationException("Строк в файле должно быть больше 0");
+                if (str == "") throw new ValidateFileException("Строк в файле должно быть больше 0");
                 while (str != "")
                 {
-                    if(models.Count > 10000) throw new ValidationException("Строк в файле должно быть меньше 10000");
+                    if(models.Count > 10000) throw new ValidateFileException("Строк в файле должно быть меньше 10000");
                     var valueModel = GetValueModelFromStr((str!));
                     valueModel.ValidateModel();
                     models.Add(valueModel);

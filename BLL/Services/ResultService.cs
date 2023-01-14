@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.Models.Result;
 using BLL.Models.Value;
 using DAL;
+using DAL.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
 namespace BLL.Services
@@ -13,10 +16,21 @@ namespace BLL.Services
     public class ResultService
     {
         private readonly DataContext _db;
+        private readonly IMapper _mapper;
 
-        public ResultService(DataContext db)
+        public ResultService(DataContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
+        }
+
+        public async Task<List<ResultModel>> GetResults(GetResultsRequest request)
+        {
+            return await _db.Results.WithAverageIndexFilter(request.AverageIndexFrom, request.AverageIndexTo)
+                .WithAverageTimeFilter(request.AverageTimeFrom, request.AverageTimeTo)
+                .WithFirstOperationFilter(request.FirstOperationFrom, request.FirstOperationTo)
+                .WithFileNameFilter(request.FileName).Select(x => _mapper.Map<ResultModel>(x)).AsNoTracking()
+                .ToListAsync();
         }
 
         public static ResultModel GetResultModelByValueModels(List<ValueModel> models)

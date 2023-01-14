@@ -14,6 +14,7 @@ namespace BLL.Automapper.Profiles
         public ValueProfile()
         {
             CreateMap<ValueModel, Value>();
+            CreateMap<Value, ValueModel>();
         }
     }
 }

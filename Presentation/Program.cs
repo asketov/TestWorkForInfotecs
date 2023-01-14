@@ -1,5 +1,6 @@
 using BLL;
 using DAL;
+using Presentation.Middlewares.ValidateCatcher;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseValidateCatcher();
 
 app.MapControllers();
 

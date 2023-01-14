@@ -1,4 +1,4 @@
-﻿using Common.Exceptions;
+﻿using Common.Exceptions.Validate;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +19,7 @@ namespace Common.Helpers
             var context = new ValidationContext(model);
             if (!Validator.TryValidateObject(model, context, results, true))
             {
-                throw new ValidateModelException(results.Select(x => x.ErrorMessage).ToList()!);
+                throw new ValidateModelException(results.Select(x => x.ErrorMessage).Where(x=>x != null).ToList()!);
             }
         }
     }

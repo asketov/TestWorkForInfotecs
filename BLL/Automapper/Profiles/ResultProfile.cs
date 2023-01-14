@@ -9,6 +9,7 @@ namespace BLL.Automapper.Profiles
         public ResultProfile()
         {
             CreateMap<ResultModel, Result>();
+            CreateMap<Result, ResultModel>();
         }
     }
 }

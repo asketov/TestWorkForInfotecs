@@ -14,10 +14,11 @@ namespace BLL.Attributes
 
         public ValueDateAttribute()
         {
-            ErrorMessage = $"Date must be between {_minDate} and {_maxDate}";
+            ErrorMessage = $"Дата должны быть между {_minDate} и {_maxDate}";
         }
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
             var d = (DateTime)value;
             if (d < _minDate || d > _maxDate)
                 return new ValidationResult(ErrorMessage);
