@@ -20,8 +20,7 @@ namespace Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult> UploadValuesFromCsvFile(IFormFile  csvFile)
         {
-            
-            if (csvFile.ContentType != "text/csv") return BadRequest();
+            if (csvFile.ContentType != "text/csv") return BadRequest("Это не csv формат");
             await _valueService.AddValuesFromFile(csvFile.OpenReadStream(), csvFile.FileName);
             return Ok();
         }

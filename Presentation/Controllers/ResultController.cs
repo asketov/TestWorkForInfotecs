@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BLL.Models.Result;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Presentation.Controllers
 {
@@ -18,11 +20,13 @@ namespace Presentation.Controllers
         {
             _resultService = resultService;
         }
-        [HttpPost]
-        public async Task<IActionResult> GetResultByFileName(GetResultsRequest request)
+        [HttpGet]
+        public async Task<ActionResult> GetResultsInJson([FromQuery]GetResultsRequest request, CancellationToken token)
         {
-            var models = await _resultService.GetResults(request);
-            return Ok(models);
+            var models = await _resultService.GetResults(request, token);
+            var json = JsonSerializer.Serialize(models);
+            var bytes = Encoding.UTF8.GetBytes(json);
+            return File(bytes, "application/json", "getResults.json");
         }
     }
 }

@@ -12,7 +12,6 @@ namespace DAL.Entities
         public Guid Id { get; set; }
         public string NameFile { get; set; } = null!;
         public virtual ICollection<Value> Values { get; set; } = null!;
-        public Guid ResultId { get; set; }
         public virtual Result Result { get; set; } = null!;
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230113154545_initDb")]
+    [Migration("20230114164650_initDb")]
     partial class initDb
     {
         /// <inheritdoc />
@@ -35,13 +35,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ResultId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ResultId")
-                        .IsUnique();
 
                     b.ToTable("Files");
                 });
@@ -61,6 +55,9 @@ namespace DAL.Migrations
                     b.Property<double>("AverageTime")
                         .HasColumnType("float");
 
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("FirstOperation")
                         .HasColumnType("datetime2");
 
@@ -77,6 +74,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileId")
+                        .IsUnique();
 
                     b.ToTable("Results");
                 });
@@ -106,15 +106,15 @@ namespace DAL.Migrations
                     b.ToTable("Values");
                 });
 
-            modelBuilder.Entity("DAL.Entities.File", b =>
+            modelBuilder.Entity("DAL.Entities.Result", b =>
                 {
-                    b.HasOne("DAL.Entities.Result", "Result")
-                        .WithOne("File")
-                        .HasForeignKey("DAL.Entities.File", "ResultId")
+                    b.HasOne("DAL.Entities.File", "File")
+                        .WithOne("Result")
+                        .HasForeignKey("DAL.Entities.Result", "FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Result");
+                    b.Navigation("File");
                 });
 
             modelBuilder.Entity("DAL.Entities.Value", b =>
@@ -130,13 +130,10 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.File", b =>
                 {
-                    b.Navigation("Values");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Result", b =>
-                {
-                    b.Navigation("File")
+                    b.Navigation("Result")
                         .IsRequired();
+
+                    b.Navigation("Values");
                 });
 #pragma warning restore 612, 618
         }

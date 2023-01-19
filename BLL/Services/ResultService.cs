@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BLL.Models.Result;
 using BLL.Models.Value;
 using DAL;
 using DAL.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 
 namespace BLL.Services
 {
@@ -24,13 +19,13 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<List<ResultModel>> GetResults(GetResultsRequest request)
+        public async Task<List<ResultModel>> GetResults(GetResultsRequest request, CancellationToken token)
         {
             return await _db.Results.WithAverageIndexFilter(request.AverageIndexFrom, request.AverageIndexTo)
                 .WithAverageTimeFilter(request.AverageTimeFrom, request.AverageTimeTo)
                 .WithFirstOperationFilter(request.FirstOperationFrom, request.FirstOperationTo)
-                .WithFileNameFilter(request.FileName).Select(x => _mapper.Map<ResultModel>(x)).AsNoTracking()
-                .ToListAsync();
+                .WithFileNameFilter(request.FileName).ProjectTo<ResultModel>(_mapper.ConfigurationProvider).AsNoTracking()
+                .ToListAsync(token);
         }
 
         public static ResultModel GetResultModelByValueModels(List<ValueModel> models)
@@ -48,18 +43,16 @@ namespace BLL.Services
             };
         }
 
-        public static double GetMedianaValues(List<ValueModel> models)
+        public static double GetMedianaValues(List<ValueModel> values)
         {
-            if (models == null) throw new ArgumentNullException(nameof(models));
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            var models = values.OrderBy(x => x.Index).ToList();
             var amountModels = models.Count;
             if (amountModels % 2 != 0)
             {
-                return models[(amountModels - 1) / 2].Index;
+                return models[amountModels / 2 + 1].Index;
             }
-            else
-            {
-                return (models[amountModels / 2 - 1].Index + models[amountModels / 2 + 1].Index) / 2;
-            }
+            return (models[amountModels / 2].Index + models[amountModels / 2 + 1].Index) / 2;
         }
 
         public static double GetAverageTimeValues(IEnumerable<ValueModel> models)
@@ -128,5 +121,6 @@ namespace BLL.Services
             TimeSpan elapsedSpan = new TimeSpan(elapsedTicks);
             return elapsedSpan.TotalSeconds;
         }
+
     }
 }

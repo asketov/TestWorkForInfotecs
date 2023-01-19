@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Azure;
 using Common.Exceptions.Validate;
 
 namespace Presentation.Middlewares.ValidateCatcher
@@ -32,7 +26,7 @@ namespace Presentation.Middlewares.ValidateCatcher
                 context.Response.ContentType = "text/plain; charset=utf-8";
                 await context.Response.WriteAsync(str.ToString());
             }
-            catch (ValidationException ex)
+            catch (ValidateFileException ex)
             {
                 context.Response.Clear();
                 context.Response.StatusCode = 400;

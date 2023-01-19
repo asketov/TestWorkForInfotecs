@@ -17,6 +17,7 @@ namespace DAL.Entities
         public double MaximumIndex { get; set; }
         public double MinimumIndex { get; set; }
         public int StringsAmount { get; set; }
+        public Guid FileId { get; set; }
         public virtual File File { get; set; } = null!;
     }
 }

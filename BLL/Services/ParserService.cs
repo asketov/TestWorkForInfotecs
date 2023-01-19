@@ -15,11 +15,11 @@ namespace BLL.Services
             using (var reader = new StreamReader(streamFile))
             {
                 var str = await reader.ReadLineAsync();
-                if (str == "") throw new ValidateFileException("Строк в файле должно быть больше 0");
-                while (str != "")
+                if (string.IsNullOrEmpty(str)) throw new ValidateFileException("Строк в файле должно быть больше 0");
+                while (!string.IsNullOrEmpty(str))
                 {
                     if(models.Count > 10000) throw new ValidateFileException("Строк в файле должно быть меньше 10000");
-                    var valueModel = GetValueModelFromStr((str!));
+                    var valueModel = GetValueModelFromStr(str);
                     valueModel.ValidateModel();
                     models.Add(valueModel);
                     str = await reader.ReadLineAsync();

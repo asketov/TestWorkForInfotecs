@@ -12,6 +12,18 @@ namespace DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NameFile = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Results",
                 columns: table => new
                 {
@@ -23,28 +35,16 @@ namespace DAL.Migrations
                     MedianaIndex = table.Column<double>(type: "float", nullable: false),
                     MaximumIndex = table.Column<double>(type: "float", nullable: false),
                     MinimumIndex = table.Column<double>(type: "float", nullable: false),
-                    StringsAmount = table.Column<int>(type: "int", nullable: false)
+                    StringsAmount = table.Column<int>(type: "int", nullable: false),
+                    FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Results", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Files",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameFile = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResultId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Files", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Files_Results_ResultId",
-                        column: x => x.ResultId,
-                        principalTable: "Results",
+                        name: "FK_Results_Files_FileId",
+                        column: x => x.FileId,
+                        principalTable: "Files",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -71,9 +71,9 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Files_ResultId",
-                table: "Files",
-                column: "ResultId",
+                name: "IX_Results_FileId",
+                table: "Results",
+                column: "FileId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -86,13 +86,13 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Results");
+
+            migrationBuilder.DropTable(
                 name: "Values");
 
             migrationBuilder.DropTable(
                 name: "Files");
-
-            migrationBuilder.DropTable(
-                name: "Results");
         }
     }
 }
