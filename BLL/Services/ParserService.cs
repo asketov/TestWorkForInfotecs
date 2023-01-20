@@ -19,7 +19,7 @@ namespace BLL.Services
                 while (!string.IsNullOrEmpty(str))
                 {
                     if(models.Count > 10000) throw new ValidateFileException("Строк в файле должно быть меньше 10000");
-                    var valueModel = GetValueModelFromStr(str);
+                    var valueModel = str.GetValueModelFromStr();
                     valueModel.ValidateModel();
                     models.Add(valueModel);
                     str = await reader.ReadLineAsync();
@@ -28,7 +28,7 @@ namespace BLL.Services
             return models;
         }
 
-        private static ValueModel GetValueModelFromStr(string str)
+        private static ValueModel GetValueModelFromStr(this string str)
         {
            var strMas = str.Split(';');
            return new ValueModel()
