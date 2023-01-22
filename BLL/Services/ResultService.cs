@@ -28,7 +28,7 @@ namespace BLL.Services
                 .ToListAsync(token);
         }
 
-        public static ResultModel GetResultModelByValueModels(List<ValueModel> models)
+        public static ResultModel GetResultModel(List<ValueModel> models)
         {
             return new ResultModel()
             {
@@ -45,7 +45,6 @@ namespace BLL.Services
 
         public static double GetMedianaValues(List<ValueModel> values)
         {
-            if (values == null) throw new ArgumentNullException(nameof(values));
             var models = values.OrderBy(x => x.Index).ToList();
             var amountModels = models.Count;
             if (amountModels % 2 != 0)
@@ -57,24 +56,12 @@ namespace BLL.Services
 
         public static double GetAverageTimeValues(IEnumerable<ValueModel> models)
         {
-            if (models == null) throw new ArgumentNullException(nameof(models));
-            double sum = 0;
-            foreach (var el in models)
-            {
-                sum += el.Time;
-            }
-            return sum / models.Count();
+            return models.Select(x => x.Time).Sum() / models.Count();
         }
 
         public static double GetAverageIndexValues(IEnumerable<ValueModel> models)
         {
-            if (models == null) throw new ArgumentNullException(nameof(models));
-            double sum = 0;
-            foreach (var el in models)
-            {
-                sum += el.Index;
-            }
-            return sum / models.Count();
+            return models.Select(x=>x.Index).Sum() / models.Count();
         }
 
         public static double GetMinimumIndexValues(List<ValueModel> models)

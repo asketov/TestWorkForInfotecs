@@ -16,7 +16,7 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameFile = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NameFile = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,6 +69,12 @@ namespace DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_NameFile",
+                table: "Files",
+                column: "NameFile",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Results_FileId",

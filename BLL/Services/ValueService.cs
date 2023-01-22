@@ -15,22 +15,23 @@ namespace BLL.Services
     {
         private readonly DataContext _db;
         private readonly IMapper _mapper;
-        public ValueService(DataContext db, IMapper mapper)
+        private readonly FileService _fileService;
+        public ValueService(DataContext db, IMapper mapper, FileService fileService)
         {
             _db = db;
             _mapper = mapper;
+            _fileService = fileService;
         }
 
         public async Task AddValuesFromFile(Stream fileStream, string fileName)
         {
             var valueModels = await ParserService.ReadValuesFileAsync(fileStream);
-            var fileDb = await _db.Files.FirstOrDefaultAsync(x => x.NameFile == fileName);
-            if (fileDb != null) _db.Files.Remove(fileDb);
+            await _fileService.DeleteFileByName(fileName);
             var file = new DAL.Entities.File()
             {
                 NameFile = fileName,
                 Values = valueModels.Select(x => _mapper.Map<Value>(x)).ToList(),
-                Result = _mapper.Map<Result>(ResultService.GetResultModelByValueModels(valueModels))
+                Result = _mapper.Map<Result>(ResultService.GetResultModel(valueModels))
             };
             _db.Files.Add(file);
             await _db.SaveChangesAsync();

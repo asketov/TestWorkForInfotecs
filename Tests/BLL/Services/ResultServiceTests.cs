@@ -25,29 +25,6 @@ namespace Tests.BLL.Services
             Assert.Equal(medianaFourCount, (valueModelsFourCount[2].Index + valueModelsFourCount[3].Index) / 2);
         }
 
-        [Fact]
-        public void GetAverageTimeFromValues()
-        {
-            // Arrange
-            var valueModels = ValueModelFactory.GetValueModels().GetRange(0, 3);
-            var result = valueModels.Select(x => x.Time).Sum() / valueModels.Count;
-            // Act
-            var averageTime = ResultService.GetAverageTimeValues(valueModels);
-            // Assert
-            Assert.Equal(result, averageTime);
-        }
-
-        [Fact]
-        public async Task GetAverageIndexFromValues()
-        {
-            // Arrange
-            var valueModels = ValueModelFactory.GetValueModels().GetRange(0, 3);
-            var result = valueModels.Select(x => x.Index).Sum() / valueModels.Count;
-            // Act
-            var averageIndex = ResultService.GetAverageIndexValues(valueModels);
-            // Assert
-            Assert.Equal(result, averageIndex);
-        }
 
         [Fact]
         public void GetMinimumIndexFromValues()

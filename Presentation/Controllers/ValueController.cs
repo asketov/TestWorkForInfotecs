@@ -21,7 +21,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetValuesByFileName(string fileName, CancellationToken token)
+        public async Task<IActionResult> GetValues(string fileName, CancellationToken token)
         {
             var models = await _valueService.GetValuesModelsByFileName(fileName, token);
             return Ok(models);

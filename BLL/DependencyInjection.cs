@@ -16,6 +16,7 @@ namespace BLL
         {
             services.AddScoped<ValueService>();
             services.AddScoped<ResultService>();
+            services.AddScoped<FileService>();
             services.AddAutoMapper(typeof(ValueProfile).Assembly, typeof(ResultProfile).Assembly);
             return services;
         }

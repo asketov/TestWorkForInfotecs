@@ -30,9 +30,12 @@ namespace DAL.Migrations
 
                     b.Property<string>("NameFile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NameFile")
+                        .IsUnique();
 
                     b.ToTable("Files");
                 });

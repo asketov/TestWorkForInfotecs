@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230114164650_initDb")]
+    [Migration("20230121010102_initDb")]
     partial class initDb
     {
         /// <inheritdoc />
@@ -33,9 +33,12 @@ namespace DAL.Migrations
 
                     b.Property<string>("NameFile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NameFile")
+                        .IsUnique();
 
                     b.ToTable("Files");
                 });

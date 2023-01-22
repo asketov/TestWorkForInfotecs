@@ -19,19 +19,19 @@ namespace Tests.BLL.Common
                 },
                 new()
                 {
-                    Date = new DateTime(2001,1,1), Index = 1500, Time = 1500
+                    Date = new DateTime(2001,1,1), Index = 1500.1, Time = 1500
                 },
                 new()
                 {
-                    Date = new DateTime(2015,12,11), Index = 2000, Time = 2000
+                    Date = new DateTime(2015,12,11), Index = 2000.534, Time = 2000
                 },
                 new()
                 {
-                    Date = new DateTime(2019,7,5), Index = 2500, Time = 2500
+                    Date = new DateTime(2019,7,5), Index = 2500.11, Time = 2500
                 },
                 new()
                 {
-                    Date = DateTime.Today, Index = 3000, Time = 3000
+                    Date = DateTime.Today, Index = 3000.8, Time = 3000
                 }
             };
         }

@@ -18,11 +18,18 @@ namespace Presentation.Controllers
             _valueService = valueService;
         }
         [HttpPost]
-        public async Task<ActionResult> UploadValuesFromCsvFile(IFormFile  csvFile)
+        public async Task<ActionResult> UploadValuesFromCsvFile(IFormFile csvFile)
         {
-            if (csvFile.ContentType != "text/csv") return BadRequest("Это не csv формат");
-            await _valueService.AddValuesFromFile(csvFile.OpenReadStream(), csvFile.FileName);
-            return Ok();
+            try
+            {
+                if (csvFile.ContentType != "text/csv") return BadRequest("Это не csv формат");
+                await _valueService.AddValuesFromFile(csvFile.OpenReadStream(), csvFile.FileName);
+                return Ok("Values успешно добавлены");
+            }
+            catch (Exception ex) when (ex is FormatException || ex is IndexOutOfRangeException)
+            {
+                return BadRequest("Какая-то из строк имеет неверный вид");
+            }
         }
     }
 }
