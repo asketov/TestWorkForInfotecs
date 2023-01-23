@@ -13,8 +13,8 @@ namespace BLL.Models.Value
     {
         [ValueDate]
         public DateTime Date { get; set; }
-        [Range(0,Int32.MaxValue,ErrorMessage = "Время должно быть больше 0")]
-        public int Time { get; set; }
+        [Range(0,Int64.MaxValue,ErrorMessage = "Время должно быть больше 0")]
+        public long Time { get; set; }
         [Range(0,Double.MaxValue, ErrorMessage = "Показатель должен быть больше 0")]
         public double Index { get; set; }
     }

@@ -96,8 +96,8 @@ namespace DAL.Migrations
                     b.Property<double>("Index")
                         .HasColumnType("float");
 
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
+                    b.Property<long>("Time")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

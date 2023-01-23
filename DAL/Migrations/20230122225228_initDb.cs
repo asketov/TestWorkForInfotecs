@@ -55,7 +55,7 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Time = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<long>(type: "bigint", nullable: false),
                     Index = table.Column<double>(type: "float", nullable: false),
                     FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

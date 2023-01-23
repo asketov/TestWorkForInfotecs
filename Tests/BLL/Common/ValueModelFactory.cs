@@ -15,11 +15,11 @@ namespace Tests.BLL.Common
             {
                 new()
                 {
-                    Date = DateTime.Today, Index = 1000, Time = 1000
+                    Date = DateTime.Today, Index = 2800.7, Time = 6743
                 },
                 new()
                 {
-                    Date = new DateTime(2001,1,1), Index = 1500.1, Time = 1500
+                    Date = new DateTime(2016,1,1), Index = 2412.1, Time = 2800
                 },
                 new()
                 {

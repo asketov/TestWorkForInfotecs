@@ -24,6 +24,7 @@ namespace Presentation.Controllers
         public async Task<ActionResult> GetResultsInJson([FromQuery]GetResultsRequest request, CancellationToken token)
         {
             var models = await _resultService.GetResults(request, token);
+            if (!models.Any()) return NotFound("Такие результаты не найдены");
             var json = JsonSerializer.Serialize(models);
             var bytes = Encoding.UTF8.GetBytes(json);
             return File(bytes, "application/json", "getResults.json");

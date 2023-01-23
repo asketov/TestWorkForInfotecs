@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230121010102_initDb")]
+    [Migration("20230122225228_initDb")]
     partial class initDb
     {
         /// <inheritdoc />
@@ -99,8 +99,8 @@ namespace DAL.Migrations
                     b.Property<double>("Index")
                         .HasColumnType("float");
 
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
+                    b.Property<long>("Time")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

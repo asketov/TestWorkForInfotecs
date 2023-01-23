@@ -18,23 +18,23 @@ namespace DAL.Extensions
         }
         public static IQueryable<Result> WithAverageTimeFilter(this IQueryable<Result> query, double? timeFrom, double? timeTo)
         {
-            if (timeFrom == null && timeTo != null) return query.Where(x => x.AverageTime < timeTo);
-            if (timeTo == null && timeFrom != null) return query.Where(x => x.AverageTime > timeFrom);
-            if (timeFrom != null && timeTo != null) return query.Where(x => x.AverageTime < timeTo && x.AverageTime > timeFrom);
+            if (timeFrom == null && timeTo != null) return query.Where(x => x.AverageTime <= timeTo);
+            if (timeTo == null && timeFrom != null) return query.Where(x => x.AverageTime >= timeFrom);
+            if (timeFrom != null && timeTo != null) return query.Where(x => x.AverageTime <= timeTo && x.AverageTime >= timeFrom);
             return query;
         }
         public static IQueryable<Result> WithAverageIndexFilter(this IQueryable<Result> query, double? indexFrom, double? indexTo)
         {
-            if (indexFrom == null && indexTo != null) return query.Where(x => x.AverageIndex < indexTo);
-            if (indexTo == null && indexFrom != null) return query.Where(x => x.AverageIndex > indexFrom);
-            if (indexFrom != null && indexTo != null) return query.Where(x => x.AverageIndex < indexTo && x.AverageIndex > indexFrom);
+            if (indexFrom == null && indexTo != null) return query.Where(x => x.AverageIndex <= indexTo);
+            if (indexTo == null && indexFrom != null) return query.Where(x => x.AverageIndex >= indexFrom);
+            if (indexFrom != null && indexTo != null) return query.Where(x => x.AverageIndex <= indexTo && x.AverageIndex >= indexFrom);
             return query;
         }
         public static IQueryable<Result> WithFirstOperationFilter(this IQueryable<Result> query, DateTime? first, DateTime? last)
         {
-            if (first == null && last != null) return query.Where(x => x.FirstOperation < last);
-            if (last == null && first != null) return query.Where(x => x.FirstOperation > first);
-            if (first != null && last != null) return query.Where(x => x.FirstOperation < last && x.FirstOperation > first);
+            if (first == null && last != null) return query.Where(x => x.FirstOperation <= last);
+            if (last == null && first != null) return query.Where(x => x.FirstOperation >= first);
+            if (first != null && last != null) return query.Where(x => x.FirstOperation <= last && x.FirstOperation >= first);
             return query;
         }
     }

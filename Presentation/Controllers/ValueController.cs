@@ -24,6 +24,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetValues(string fileName, CancellationToken token)
         {
             var models = await _valueService.GetValuesModelsByFileName(fileName, token);
+            if (!models.Any()) return NotFound("такой файл не найден");
             return Ok(models);
         }
     }

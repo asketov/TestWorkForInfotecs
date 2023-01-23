@@ -56,7 +56,7 @@ namespace BLL.Services
 
         public static double GetAverageTimeValues(IEnumerable<ValueModel> models)
         {
-            return models.Select(x => x.Time).Sum() / models.Count();
+            return (double)models.Select(x => x.Time).Sum() / models.Count();
         }
 
         public static double GetAverageIndexValues(IEnumerable<ValueModel> models)

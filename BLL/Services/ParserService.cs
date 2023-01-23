@@ -15,7 +15,8 @@ namespace BLL.Services
             using (var reader = new StreamReader(streamFile))
             {
                 var str = await reader.ReadLineAsync();
-                if (string.IsNullOrEmpty(str)) throw new ValidateFileException("Строк в файле должно быть больше 0");
+                if (string.IsNullOrEmpty(str)) throw new ValidateFileException("Строк в файле должно быть больше 0" +
+                                                                               "или у вас есть пустые строки в начале");
                 while (!string.IsNullOrEmpty(str))
                 {
                     if(models.Count > 10000) throw new ValidateFileException("Строк в файле должно быть меньше 10000");
@@ -34,7 +35,7 @@ namespace BLL.Services
            return new ValueModel()
            {
                Date = DateTime.ParseExact(strMas[0], "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture),
-               Time = Int32.Parse(strMas[1]),
+               Time = Int64.Parse(strMas[1]),
                Index = Double.Parse(strMas[2])
            };
         }

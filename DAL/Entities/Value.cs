@@ -10,7 +10,7 @@ namespace DAL.Entities
     {
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
-        public int Time { get; set; }
+        public long Time { get; set; }
         public double Index { get; set; }
         public virtual File File { get; set; } = null!;
     }
